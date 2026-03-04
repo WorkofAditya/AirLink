@@ -1,10 +1,29 @@
-# AirLink
+<div align="center">
+  <a href="">
+    <img src="https://github.com/user-attachments/assets/b4a60e4d-dcb6-4d7e-80f0-aee4cbb84c19" alt="Logo" width="150" height="150">
+  </a>
+ 
+  # _Send it,_ with [AirLink](https://github.com/WorkofAditya/Airlink)
+
+  <p>
+    Transfer files instantly over your local network.
+    <br>
+    No login. No cloud. Just connect and send.
+    <br> 
+    <b>Developed by <a href="https://github.com/WorkofAditya/">Adityasinh</a></b>
+    <br>
+    <br>
+    <a href="https://github.com/WorkofAditya/Airlink/issues">Report a bug</a>
+    <br />
+    <a href="https://github.com/WorkofAditya/Airlink/issues">Request feature</a>
+  </p>
+</div>
+<br>
+       
 AirLink is a streamlined and user-friendly web-based file-sharing platform designed to facilitate secure and fast file transfers between devices connected to the same network.
 
 
 ![Airlink Mokeup 21](https://github.com/user-attachments/assets/e0053090-a35f-49c6-8cfb-72f4a8790c4f)
-
-
 
 ## Features
 - Automatically detects devices on the same network.
