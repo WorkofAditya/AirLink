@@ -1,75 +1,72 @@
 <div align="center">
-  <a href="">
-    <img src="https://github.com/user-attachments/assets/b4a60e4d-dcb6-4d7e-80f0-aee4cbb84c19" alt="Logo" width="150" height="150">
-  </a>
- 
-  # _Send it,_ with [AirLink](https://github.com/WorkofAditya/Airlink)
-
-  <p>
-    Transfer files instantly over your local network.
-    <br>
-    No login. No cloud. Just connect and send.
-    <br> 
-    <b>Developed by <a href="https://github.com/WorkofAditya/">Adityasinh</a></b>
-    <br>
-    <br>
-    <a href="https://github.com/WorkofAditya/Airlink/issues">Report a bug</a>
-    <br />
-    <a href="https://github.com/WorkofAditya/Airlink/issues">Request feature</a>
-  </p>
+  <img src="https://github.com/user-attachments/assets/b4a60e4d-dcb6-4d7e-80f0-aee4cbb84c19" alt="Logo" width="150" height="150">
+  <h1>AirLink</h1>
+  <p>Serverless browser-to-browser file transfer using WebRTC + Cloudflare Worker signaling.</p>
 </div>
-<br>
-       
-AirLink is a streamlined and user-friendly web-based file-sharing platform designed to facilitate secure and fast file transfers between devices connected to the same network.
 
+## Architecture (New)
 
-![Airlink Mokeup 21](https://github.com/user-attachments/assets/e0053090-a35f-49c6-8cfb-72f4a8790c4f)
+AirLink now uses a **fully serverless** model:
+
+- **Frontend (Cloudflare Pages):** static HTML/CSS/JS app.
+- **Signaling (Cloudflare Workers + Durable Objects):** relays SDP offers/answers and ICE candidates.
+- **File transport:** direct peer-to-peer over **WebRTC RTCDataChannel**.
+
+> File bytes never pass through the Worker signaling service.
+
+## Project Structure
+
+- `index.html` – main UI entrypoint.
+- `static/styles.css` – existing UI styles.
+- `static/script.js` – WebRTC + signaling + chunked transfer logic.
+- `worker/src/index.js` – Cloudflare Worker signaling relay + Durable Object room state.
+- `worker/wrangler.toml` – Worker deployment configuration.
+
+## Local Development
+
+### 1) Frontend
+Serve the repository root as static files (any static server works):
+
+```bash
+python3 -m http.server 8080
+```
+
+Open `http://localhost:8080`.
+
+### 2) Worker
+
+```bash
+cd worker
+npm create cloudflare@latest . -- --existing-script
+npx wrangler dev
+```
+
+Then update `window.AIRLINK_CONFIG.SIGNALING_URL` in `index.html` to your Worker WebSocket endpoint, for example:
+
+```js
+wss://airlink-signaling.<your-subdomain>.workers.dev/ws
+```
+
+## Deployment
+
+### Cloudflare Worker (signaling)
+
+```bash
+cd worker
+npx wrangler deploy
+```
+
+### Cloudflare Pages (frontend)
+Deploy repository root as static site output.
 
 ## Features
-- Automatically detects devices on the same network.
-- Displays available devices in list.
-- Simple click-to-select device functionality.
-- Send files directly to the selected device with a single click.
-- Send messages via right click or hold
-- Supports various file types and sizes.
-- Incorporates Socket.IO for real-time communication between devices.
 
-## Setup Instructions
+- Automatic room generation via URL hash.
+- Peer discovery inside a shared room.
+- WebRTC DataChannel file transfer with chunking for large files.
+- Send text messages over the same data channel.
+- Progress bar + connection status updates + basic error handling.
 
-### Prerequisites
-- Python 3.x installed on your system.
-- Flask framework.
-
-### Steps to setup locally
-1. Clone the repository or download the project files.
-2. Install necessary library:
-   ```
-   pip install -r requirements.txt
-   ```
-3. Run the `app.py` file:
-   ```bash
-   python3 app.py
-   ```
-4. Open your web browser and go to `http://<local_ip>:5000`.
-
-
-## Technologies Used
-- **Frontend**: HTML, CSS, JavaScript
-- **Backend**: Python (WSGI) 
-- **Real-time Communication**: Socket.IO
-
-![airlink 2](https://github.com/user-attachments/assets/39a423b5-e273-4fe8-868a-f8ab7dc1c0db)
-
-
-<!-- ## AirLink is live on: 
-- [**Railway**](https://airlink.up.railway.app/) 
-- [**Render**](https://airlink-ma0q.onrender.com/) 
--->
 ## License
-This project is licensed under the [GPL 3.0 - License](https://github.com/Adityasinh-Sodha/AirLink/blob/main/LICENSE).
-## Author
-Developed by **Adityasinh**.
 
----
-
-Experience the ease of sharing files with **AirLink Network**. Happy Sharing!
+GPL-3.0. See `LICENSE`.
