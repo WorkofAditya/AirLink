@@ -1,5 +1,0 @@
-Flask
-Flask-SocketIO
-eventlet
-gevent
-requests

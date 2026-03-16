@@ -1,0 +1,9 @@
+{
+  "name": "airlink",
+  "private": true,
+  "scripts": {
+    "start": "node scripts/dev.js",
+    "frontend": "python3 -m http.server 8080",
+    "worker": "cd worker && npx wrangler dev --port 8787"
+  }
+}
